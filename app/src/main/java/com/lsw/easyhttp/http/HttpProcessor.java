@@ -13,6 +13,9 @@ public class HttpProcessor implements IhttpProcessor{
     private static volatile HttpProcessor instance = null;
     private static IhttpProcessor mIhttpProcessor;
 
+    private HttpProcessor() {
+    }
+
     public static HttpProcessor getInstance() {
         if(instance == null){
             synchronized (HttpProcessor.class){
