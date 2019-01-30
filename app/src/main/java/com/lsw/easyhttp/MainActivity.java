@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lsw.easyhttp.http.HttpProcessor;
+import com.lsw.easyhttp.interfaces.ICallBack;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +23,27 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HttpProcessor.getInstance().get(HENCODER_URL, null, new ICallBack() {
+                    @Override
+                    public void onSuccess(final String str) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(str);
+                            }
+                        });
+                    }
 
+                    @Override
+                    public void onFailed(final String str) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(str);
+                            }
+                        });
+                    }
+                });
             }
         });
     }

@@ -1,15 +1,13 @@
 package com.lsw.easyhttp.processor;
 
 import com.lsw.easyhttp.interfaces.ICallBack;
-import com.lsw.easyhttp.interfaces.IhttpProcessor;
+import com.lsw.easyhttp.interfaces.IHttpCallback;
+import com.lsw.easyhttp.interfaces.IProcessor;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -22,7 +20,7 @@ import okhttp3.Response;
 /**
  * Created by sweeneyliu on 2019/1/4.
  */
-public class OkHttpProcessor implements IhttpProcessor{
+public class OkHttpProcessor implements IProcessor {
 
     private static OkHttpClient mOkHttpClient;
 
@@ -63,7 +61,7 @@ public class OkHttpProcessor implements IhttpProcessor{
      * @param callback
      * @return
      */
-    public  void getDataAsynFromNet(String url, final ICallBack callback) {
+    public  void getDataAsynFromNet(String url, final IHttpCallback callback) {
         //1 构造Request
         Request.Builder builder = new Request.Builder();
         Request request=builder.get().url(url).build();
@@ -73,12 +71,12 @@ public class OkHttpProcessor implements IhttpProcessor{
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-//                myNetCall.failed(call,e);
+                callback.onFailure(call, e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                myNetCall.success(call,response);
+                callback.onSuccess(call, response);
             }
         });
     }
@@ -136,7 +134,7 @@ public class OkHttpProcessor implements IhttpProcessor{
      * @param bodyParams
      * @param callback
      */
-    public  void postDataAsynToNet(String url, Map<String,String> bodyParams, final ICallBack callback) {
+    public  void postDataAsynToNet(String url, Map<String,String> bodyParams, final IHttpCallback callback) {
         //1构造RequestBody
         RequestBody body=setRequestBody(bodyParams);
         //2 构造Request
@@ -148,13 +146,12 @@ public class OkHttpProcessor implements IhttpProcessor{
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-//                myNetCall.failed(call,e);
+                callback.onFailure(call,e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                myNetCall.success(call,response);
-
+                callback.onSuccess(call, response);
             }
         });
     }

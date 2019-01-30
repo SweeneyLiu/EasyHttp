@@ -1,17 +1,17 @@
 package com.lsw.easyhttp.http;
 
 import com.lsw.easyhttp.interfaces.ICallBack;
-import com.lsw.easyhttp.interfaces.IhttpProcessor;
+import com.lsw.easyhttp.interfaces.IProcessor;
 
 import java.util.Map;
 
 /**
  * Created by sweeneyliu on 2019/1/4.
  */
-public class HttpProcessor implements IhttpProcessor{
+public class HttpProcessor implements IProcessor {
 
     private static volatile HttpProcessor instance = null;
-    private static IhttpProcessor mIhttpProcessor;
+    private static IProcessor mIProcessor;
 
     private HttpProcessor() {
     }
@@ -27,17 +27,17 @@ public class HttpProcessor implements IhttpProcessor{
         return instance;
     }
 
-    public void init(IhttpProcessor httpProcessor){
-        mIhttpProcessor = httpProcessor;
+    public void init(IProcessor httpProcessor){
+        mIProcessor = httpProcessor;
     }
 
     @Override
     public void get(String url, Map<String, Object> params, ICallBack callback) {
-        mIhttpProcessor.get(url,params,callback);
+        mIProcessor.get(url,params,callback);
     }
 
     @Override
     public void post(String url, Map<String, Object> params, ICallBack callback) {
-        mIhttpProcessor.post(url,params,callback);
+        mIProcessor.post(url,params,callback);
     }
 }
